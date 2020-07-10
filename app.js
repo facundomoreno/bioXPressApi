@@ -5,6 +5,19 @@ app.use(express.json());
 const userRouter = require("./api/routers/user")
 
 
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET,HEAD,OPTIONS,DELETE,POST,PUT"
+    );
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    next();
+  });
+
 //uso las rutas para acceder a los métodos
 app.use("/user", userRouter);
 
