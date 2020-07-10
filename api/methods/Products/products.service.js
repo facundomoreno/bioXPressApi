@@ -1,7 +1,7 @@
 const pool = require('../../../config/database')
 
 module.exports = {
-    uploadProduct: (data) => {
+    uploadProduct: (data, callback) => {
         pool.query(`INSERT INTO products (price, title, ds_product, id_store, stock, id_category) values(?,?,?,?,?,?)`, [
                data.price,
                data.title,
@@ -21,7 +21,7 @@ module.exports = {
 
     },
 
-    getProductsByIdStore: (id_store) => {
+    getProductsByIdStore: (id_store, callback) => {
         pool.query(
             `SELECT p.*, c.ds_category, pic.* 
              FROM products p
@@ -30,14 +30,14 @@ module.exports = {
              where p.id_store = ?`, [id_store],
             (error, results, fields) => {
                 if (error) {
-                    callBack(error);
+                    callback(error);
                 }
-                return callBack(null, results);
+                return callback(null, results);
             }
         );
     },
 
-    getProductsByCategory: (id_category) => {
+    getProductsByCategory: (id_category, callback) => {
         pool.query(
             `SELECT p.*, c.ds_category, pic.* 
              FROM products p
@@ -46,14 +46,14 @@ module.exports = {
              where p.id_category = ?`, [id_category],
             (error, results, fields) => {
                 if (error) {
-                    callBack(error);
+                    callback(error);
                 }
-                return callBack(null, results);
+                return callback(null, results);
             }
         );
     },
 
-    getProductsByPriceRange: (data) => {
+    getProductsByPriceRange: (data, callback) => {
         pool.query(
             `SELECT p.*, c.ds_category, pic.* 
              FROM products p
@@ -62,14 +62,14 @@ module.exports = {
              where p.price BETWEEN ? AND ?`, [data.min, data.max],
             (error, results, fields) => {
                 if (error) {
-                    callBack(error);
+                    callback(error);
                 }
-                return callBack(null, results);
+                return callback(null, results);
             }
         );
     },
 
-    getProductsByStockRange : (data) => {
+    getProductsByStockRange : (data, callback) => {
         pool.query(
             `SELECT p.*, c.ds_category, pic.* 
             FROM products p
@@ -79,15 +79,15 @@ module.exports = {
             (error, results, fields) => {
                 if(error)
                 {
-                    callBack(error);
+                    callback(error);
                 }
-                    return callBack(null, results);
+                    return callback(null, results);
                 
             } 
 
         );
     },
-    getProductsByTitleMatch : (title) => {
+    getProductsByTitleMatch : (title, callback) => {
         pool.query(
             `SELECT p.*, c.ds_category, pic.* 
             FROM products p
@@ -97,9 +97,9 @@ module.exports = {
             (error, results, fields) => {
                 if(error)
                 {
-                    callBack(error);
+                    callback(error);
                 }
-                    return callBack(null, results);
+                    return callback(null, results);
                 
             } 
 

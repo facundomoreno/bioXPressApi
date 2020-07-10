@@ -10,6 +10,7 @@ const {
 module.exports = 
 {
     uploadProduct: (req, res) => {
+        const body = req.body;
         
         uploadProduct (body, (err, results) => {
             if (err) {

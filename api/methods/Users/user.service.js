@@ -23,7 +23,7 @@ module.exports = {
 
     },
 
-    getUserByUsername: (username) => {
+    getUserByUsername: (username, callback) => {
         pool.query(
             `SELECT u.username, u.password, ut.ds_type
              FROM users u
@@ -31,9 +31,9 @@ module.exports = {
              where u.username = ?`, [username],
             (error, results, fields) => {
                 if (error) {
-                    callBack(error);
+                    callback(error);
                 }
-                return callBack(null, results[0]);
+                return callback(null, results[0]);
             }
         );
     }
