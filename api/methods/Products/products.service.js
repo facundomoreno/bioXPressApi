@@ -1,4 +1,15 @@
-const pool = require('../../../config/database')
+const pool = require('../../../config/database');
+const { query } = require('express');
+
+const baseQuery = 
+`
+SELECT p.*, c.ds_category,s.store_name, pic.path, pic.id_product AS id_product_pic 
+FROM products p 
+LEFT OUTER JOIN product_category c ON c.id_category = p.id_category 
+LEFT OUTER JOIN product_pictures pic ON pic.id_product = p.id_product 
+LEFT OUTER JOIN stores s ON s.id_store = p.id_store
+where
+`
 
 module.exports = {
     uploadProduct: (data, callback) => {
@@ -23,11 +34,7 @@ module.exports = {
 
     getProductsByIdStore: (id_store, callback) => {
         pool.query(
-            `SELECT p.*, c.ds_category, pic.* 
-             FROM products p
-             LEFT OUTER JOIN product_category c ON c.id_category = p.id_category
-             LEFT OUTER JOIN product_pictures pic ON pic.id_product = p.id_product
-             where p.id_store = ?`, [id_store],
+            `${baseQuery} p.id_store = ?`, [id_store],
             (error, results, fields) => {
                 if (error) {
                     callback(error);
@@ -39,11 +46,7 @@ module.exports = {
 
     getProductsByCategory: (id_category, callback) => {
         pool.query(
-            `SELECT p.*, c.ds_category, pic.* 
-             FROM products p
-             LEFT OUTER JOIN product_category c ON c.id_category = p.id_category
-             LEFT OUTER JOIN product_pictures pic ON pic.id_product = p.id_product
-             where p.id_category = ?`, [id_category],
+            `${baseQuery} p.id_category = ?`, [id_category],
             (error, results, fields) => {
                 if (error) {
                     callback(error);
@@ -55,11 +58,7 @@ module.exports = {
 
     getProductsByPriceRange: (data, callback) => {
         pool.query(
-            `SELECT p.*, c.ds_category, pic.* 
-             FROM products p
-             LEFT OUTER JOIN product_category c ON c.id_category = p.id_category
-             LEFT OUTER JOIN product_pictures pic ON pic.id_product = p.id_product
-             where p.price BETWEEN ? AND ?`, [data.min, data.max],
+            `${baseQuery} p.price BETWEEN ? AND ?`, [data.min, data.max],
             (error, results, fields) => {
                 if (error) {
                     callback(error);
@@ -71,11 +70,7 @@ module.exports = {
 
     getProductsByStockRange : (data, callback) => {
         pool.query(
-            `SELECT p.*, c.ds_category, pic.* 
-            FROM products p
-            LEFT OUTER JOIN product_category c ON c.id_category = p.id_category
-            LEFT OUTER JOIN product_pictures pic ON pic.id_product = p.id_product
-            where p.stock BETWEEN ? AND ?`, [data.min, data.max],
+            `${baseQuery} p.stock BETWEEN ? AND ?`, [data.min, data.max],
             (error, results, fields) => {
                 if(error)
                 {
@@ -89,11 +84,7 @@ module.exports = {
     },
     getProductsByTitleMatch : (title, callback) => {
         pool.query(
-            `SELECT p.*, c.ds_category, pic.* 
-            FROM products p
-            LEFT OUTER JOIN product_category c ON c.id_category = p.id_category
-            LEFT OUTER JOIN product_pictures pic ON pic.id_product = p.id_product
-            where p.title = ?`, [title],
+            `${baseQuery} p.title = ?`, [title],
             (error, results, fields) => {
                 if(error)
                 {

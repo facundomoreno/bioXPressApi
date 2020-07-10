@@ -2,7 +2,7 @@ const pool = require("../../../config/database");
 
 module.exports = {
     createStore: (data, callback) => {
-        pool.query(`INSERT INTO stores (store_name, ds_store, id_user, adress) values(?,?,?,?)` [
+        pool.query(`INSERT INTO stores (store_name, ds_store, id_user, adress) values(?,?,?,?)`, [
                 data.store_name,
                 data.ds_store,
                 data.id_user,
