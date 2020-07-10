@@ -98,9 +98,9 @@ module.exports =
         });
     },
     getProductsByTitleMatch: (req, res) => {
-        const title = req.params.title;
+        const body = req.body;
         
-        getProductsByTitleMatch (title, (err, results) => {
+        getProductsByTitleMatch (body, (err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({

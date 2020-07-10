@@ -82,9 +82,9 @@ module.exports = {
 
         );
     },
-    getProductsByTitleMatch : (title, callback) => {
+    getProductsByTitleMatch : (data, callback) => {
         pool.query(
-            `${baseQuery} p.title = ?`, [title],
+            `${baseQuery} LOWER(p.title) LIKE LOWER('%${data.title}%')`,
             (error, results, fields) => {
                 if(error)
                 {
