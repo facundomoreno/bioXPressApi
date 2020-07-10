@@ -1,6 +1,12 @@
-const { createStore, updateStore, deleteStore, getStores, getStoresById } = require("../methods/Stores/store.controller");
+const { 
+    createStore, 
+    updateStore, 
+    deleteStore, 
+    getStores, 
+    getStoresById 
+} = require("../methods/Stores/store.controller");
 const router = require("express").Router();
-
+const {checkToken} = require('../../auth/TokenValidation');
 
 
 
@@ -8,10 +14,10 @@ const router = require("express").Router();
 
 //defino las rutas, su tipo y los métodos asociados
 
-router.post("/createStore", createStore);
-router.post("/updateStore", updateStore);
-router.patch("/deleteStore/:id_store", deleteStore);
-router.get("/getStores", getStores);
-router.get("/getStoresbyid/:id_store", getStoresById);
+router.post("/createStore", checkToken, createStore);
+router.post("/updateStore", checkToken, updateStore);
+router.patch("/deleteStore/:id_store", checkToken, deleteStore);
+router.get("/getStores", checkToken, getStores);
+router.get("/getStoresbyid/:id_store", checkToken, getStoresById);
 
 module.exports = router;
