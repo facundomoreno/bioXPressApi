@@ -23,7 +23,7 @@ module.exports = {
 
     },
 
-    getUserByUsername: (username, callBack) => {
+    getUserByUsername: (username) => {
         pool.query(
             `SELECT u.username, u.password, ut.ds_type
              FROM users u
