@@ -8,10 +8,14 @@ FROM products p
 LEFT OUTER JOIN product_category c ON c.id_category = p.id_category 
 LEFT OUTER JOIN product_pictures pic ON pic.id_product = p.id_product 
 LEFT OUTER JOIN stores s ON s.id_store = p.id_store
-where
+
 `
 
 module.exports = {
+
+
+
+    //tabla productos 
     uploadProduct: (data, callback) => {
         pool.query(`INSERT INTO products (price, title, ds_product, id_store, stock, id_category) values(?,?,?,?,?,?)`, [
                data.price,
@@ -43,34 +47,15 @@ module.exports = {
             }
         );
     },
-
-    getProductsByCategory: (id_category, callback) => {
+  
+    getProductsByFilters : (data, callback) => {
         pool.query(
-            `${baseQuery} p.id_category = ?`, [id_category],
-            (error, results, fields) => {
-                if (error) {
-                    callback(error);
-                }
-                return callback(null, results);
-            }
-        );
-    },
-
-    getProductsByPriceRange: (data, callback) => {
-        pool.query(
-            `${baseQuery} p.price BETWEEN ? AND ?`, [data.min, data.max],
-            (error, results, fields) => {
-                if (error) {
-                    callback(error);
-                }
-                return callback(null, results);
-            }
-        );
-    },
-
-    getProductsByStockRange : (data, callback) => {
-        pool.query(
-            `${baseQuery} p.stock BETWEEN ? AND ?`, [data.min, data.max],
+            `
+            ${baseQuery}
+            where LOWER(p.title) LIKE LOWER('%${data.title}%') AND
+             (p.stock BETWEEN ${data.minS} AND ${data.maxS}) AND
+             (p.price BETWEEN ${data.minP} AND ${data.maxP}) AND
+              p.id_category = ${data.id_category}` ,
             (error, results, fields) => {
                 if(error)
                 {
@@ -82,9 +67,26 @@ module.exports = {
 
         );
     },
-    getProductsByTitleMatch : (data, callback) => {
+
+    //categorias
+    createProductCategory: (data, callback) => {
+        pool.query(`INSERT INTO product_category (ds_category) values(?)`, [
+               data.ds_category               
+            ],
+            (error, results, fields) => {
+                if (error) {
+                    return callback(error);
+                }
+                return callback(null, results);
+            }
+
+        );
+
+    },
+
+    getProductsCategories : (callback) => {
         pool.query(
-            `${baseQuery} LOWER(p.title) LIKE LOWER('%${data.title}%')`,
+            `SELECT * FROM product_category`,
             (error, results, fields) => {
                 if(error)
                 {
@@ -95,7 +97,22 @@ module.exports = {
             } 
 
         );
-    }
+    },
+    updateProductCategory: (data, callback) => {
+        pool.query(`update product_category SET ds_category = ? where id_category=?`,[
+                data.ds_category,
+                data.id_category
+            ],
+            (error, results, fields) => {
+                if (error) {
+                    return callback(error);
+                }
+                return callback(null, results);
+            }
+
+        );
+    },
+    
 
 
 

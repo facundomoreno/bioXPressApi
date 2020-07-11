@@ -1,21 +1,25 @@
 const {
-     uploadProduct,
-     getProductsByCategory, 
-     getProductsByIdStore,
-     getProductsByStockRange,
-     getProductsByPriceRange,
-     getProductsByTitleMatch
+     uploadProduct,    
+     getProductsByIdStore,     
+     updateProductCategory,
+     createProductCategory,
+     getProductsCategories,
+     getProductsByFilters
     } = require('../methods/Products/products.controller');
 
 const {checkToken} = require('../../auth/TokenValidation');
 const router = require('express').Router();
 
+//productos
+
 router.post('/uploadProduct', checkToken, uploadProduct);
-router.post('/getProductsByStockRange', checkToken, getProductsByStockRange);
-router.post('/getProductsByPriceRange', checkToken, getProductsByPriceRange);
-router.post('/getProductsByTitleMatch', checkToken, getProductsByTitleMatch);
-router.get('/getProductsByCategory/:id_category', checkToken, getProductsByCategory);
+router.post('/getProductsByFilters', checkToken, getProductsByFilters);
 router.get('/getProductsByIdStore/:id_store', checkToken, getProductsByIdStore);
+
+//categorias
+router.post('/createProductCategory', checkToken, createProductCategory);
+router.patch('/updateProductCategory', checkToken, updateProductCategory);
+router.get('/getProductCategories', checkToken, getProductsCategories);
 
 module.exports = router;
 

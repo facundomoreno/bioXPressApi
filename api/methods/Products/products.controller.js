@@ -1,10 +1,11 @@
 const {
-    uploadProduct,
-    getProductsByCategory,
-    getProductsByIdStore,
-    getProductsByTitleMatch,
-    getProductsByPriceRange,
-    getProductsByStockRange
+    uploadProduct,   
+    getProductsByIdStore,    
+    getProductsByFilters,
+    createProductCategory,
+    updateProductCategory,
+    getProductsCategories,
+    
 } = require('./products.service');
 
 module.exports = 
@@ -26,23 +27,7 @@ module.exports =
             });
         });
     },
-    getProductsByCategory: (req, res) => {
-        const id_category = req.params.id_category;
-        
-        getProductsByCategory (id_category, (err, results) => {
-            if (err) {
-                console.log(err);
-                return res.status(500).json({
-                    success: 0,
-                    message: "database connection error",
-                });
-            }
-            return res.status(200).json({
-                success: 1,
-                data: results,
-            });
-        });
-    },
+    
 
     getProductsByIdStore: (req, res) => {
         const id_store = req.params.id_store;
@@ -62,10 +47,10 @@ module.exports =
         });
     },
 
-    getProductsByPriceRange: (req, res) => {
+    getProductsByFilters: (req, res) => {
         const body = req.body;
         
-        getProductsByPriceRange (body, (err, results) => {
+        getProductsByFilters (body, (err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({
@@ -80,10 +65,11 @@ module.exports =
         });
     },
 
-    getProductsByStockRange: (req, res) => {
+    //tabla categorias
+    createProductCategory: (req, res) => {
         const body = req.body;
         
-        getProductsByStockRange (body, (err, results) => {
+        createProductCategory (body, (err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({
@@ -97,10 +83,10 @@ module.exports =
             });
         });
     },
-    getProductsByTitleMatch: (req, res) => {
-        const body = req.body;
+
+    getProductsCategories: (req, res) => {        
         
-        getProductsByTitleMatch (body, (err, results) => {
+        getProductsCategories ((err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({
@@ -114,6 +100,25 @@ module.exports =
             });
         });
     },
+    updateProductCategory: (req, res) => {
+        const body = req.body;
+        updateProductCategory(body, (err, results) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    success: 0,
+                    message: "database connection error",
+                });
+            }
+            return res.status(200).json({
+                success: 1,
+                data: results,
+            });
+        });
+    },
+
+    
+
 
 
 
