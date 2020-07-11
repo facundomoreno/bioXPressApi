@@ -8,12 +8,15 @@ const {
     
 } = require('./products.service');
 
+
+
 module.exports = 
 {
     uploadProduct: (req, res) => {
         const body = req.body;
-        
-        uploadProduct (body, (err, results) => {
+        console.log(req.file);
+      
+        uploadProduct(body, (err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({
@@ -49,7 +52,7 @@ module.exports =
 
     getProductsByFilters: (req, res) => {
         const body = req.body;
-        
+       
         getProductsByFilters (body, (err, results) => {
             if (err) {
                 console.log(err);

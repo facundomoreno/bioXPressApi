@@ -5,6 +5,10 @@ app.use(express.json());
 const userRouter = require("./api/routers/user");
 const productRouter = require('./api/routers/products');
 const storeRouter = require('./api/routers/store');
+var bodyParser = require('body-parser')
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.use(function (req, res, next) {
@@ -19,6 +23,8 @@ app.use(function (req, res, next) {
     );
     next();
   });
+
+ 
 
 //uso las rutas para acceder a los métodos
 app.use("/users", userRouter);
