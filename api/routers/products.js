@@ -21,10 +21,9 @@ const storage = multer.diskStorage({
       cb(null, Date.now() + file.originalname);
       
     }
-  });
-  
-  const upload = multer({storage});
-  const path = require('path');
+  });  
+const upload = multer({storage});
+const path = require('path');
   
 
 //productos
@@ -39,7 +38,7 @@ router.patch('/updateProductCategory', checkToken, updateProductCategory);
 router.get('/getProductCategories', checkToken, getProductsCategories);
 
 router.post("/uploadProduct", upload.single('filee'), (req, res) => {
-    res.send("archivo enviado con éxito");       
+           
     pool.query(
       `insert into products(price, title, ds_product, id_store, stock, id_category) values(?,?,?,?,?,?)`, 
       [                        
@@ -52,7 +51,10 @@ router.post("/uploadProduct", upload.single('filee'), (req, res) => {
       ],
       (error, results, fields) => {
         if (error) {
-          return (error);
+            return res.status(500).json({
+                success: 0,
+                message: error,
+            });;
         }
         console.log(results);
        
@@ -65,10 +67,16 @@ router.post("/uploadProduct", upload.single('filee'), (req, res) => {
           [path.join(pathFixed, req.file.path), req.file.originalname, req.file.size, req.body.date, insertId],
           (error, results, fields) => {
             if (error) {
-              return (error);
+                return res.status(500).json({
+                    success: 0,
+                    message: error,
+                });
             }
-
-            return (null, results);
+            
+            return res.status(200).json({
+                success: 1,
+                data: results,
+            });
           }
         );
       }

@@ -29,9 +29,7 @@ module.exports =
                 data: results,
             });
         });
-    },
-    
-
+    },    
     getProductsByIdStore: (req, res) => {
         const id_store = req.params.id_store;
         
@@ -49,7 +47,6 @@ module.exports =
             });
         });
     },
-
     getProductsByFilters: (req, res) => {
         const body = req.body;
        
@@ -67,7 +64,6 @@ module.exports =
             });
         });
     },
-
     //tabla categorias
     createProductCategory: (req, res) => {
         const body = req.body;

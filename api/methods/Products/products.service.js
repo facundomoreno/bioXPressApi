@@ -48,7 +48,6 @@ module.exports = {
       }
     );
   },
-
   getProductsByIdStore: (id_store, callback) => {
     pool.query(
       `${baseQuery} p.id_store = ?`,
@@ -61,7 +60,6 @@ module.exports = {
       }
     );
   },
-
   getProductsByFilters: (data, callback) => {
     pool.query(
       `
@@ -79,7 +77,6 @@ module.exports = {
       }
     );
   },
-
   //categorias
   createProductCategory: (data, callback) => {
     pool.query(
@@ -93,7 +90,6 @@ module.exports = {
       }
     );
   },
-
   getProductsCategories: (callback) => {
     pool.query(`SELECT * FROM product_category`, (error, results, fields) => {
       if (error) {
