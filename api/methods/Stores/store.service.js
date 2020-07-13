@@ -53,12 +53,15 @@ module.exports = {
 
     getStores: (callBack) => {
         pool.query(
-            `SELECT * FROM stores`,
+            `SELECT s.*, u.first_name, u.last_name
+             FROM stores s
+             LEFT OUTER JOIN users u ON u.id_user = s.id_user
+             `,
             (error, results, fields) => {
                 if (error) {
                     callBack(error);
                 }
-                return callBack(null, results[0]);
+                return callBack(null, results);
             }
         );
     },

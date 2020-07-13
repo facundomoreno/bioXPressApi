@@ -83,6 +83,30 @@ router.post("/uploadProduct", upload.single('filee'), (req, res) => {
       
     ); 
   });
+
+router.post("/updateProductPic", upload.single("filee"), (req, res) => {
+
+  pool.query(
+    `UPDATE product_pictures SET path = ?, original_name = ?, size = ?, date = ?  WHERE id_product = ?`,
+    ['http://localhost:3002/' + req.file.path, req.file.originalname, req.file.size,  req.body.date, req.body.id_product],
+    (error, results, fields) => {
+      if (error) {
+          return res.status(500).json({
+              success: 0,
+              message: error,
+          });
+      }
+      
+      return res.status(200).json({
+          success: 1,
+          data: results,
+      });
+    }
+  );
+
+
+
+});  
   
 
 module.exports = router;
