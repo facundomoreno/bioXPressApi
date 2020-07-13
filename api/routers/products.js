@@ -15,7 +15,7 @@ const router = require('express').Router();
 const multer = require('multer');
 const storage = multer.diskStorage({
     destination:(req, file, cb) =>{
-      cb(null, './images/productPics')
+      cb(null, './public')
     },
     filename: (req, file, cb) => {
       cb(null, Date.now() + file.originalname);
@@ -59,12 +59,12 @@ router.post("/uploadProduct", upload.single('filee'), (req, res) => {
         console.log(results);
        
         insertId = results.insertId;
-        var pathFixed = path.join(__dirname, '../../');
-        console.log(pathFixed); 
+        
+       
 
         pool.query(
           `INSERT INTO product_pictures (path, original_name, size, date, id_product) values(?,?,?,?,?)`,
-          [path.join(pathFixed, req.file.path), req.file.originalname, req.file.size, req.body.date, insertId],
+          ['http://localhost:3002/' + req.file.path, req.file.originalname, req.file.size, req.body.date, insertId],
           (error, results, fields) => {
             if (error) {
                 return res.status(500).json({

@@ -11,7 +11,17 @@ LEFT OUTER JOIN product_pictures pic ON pic.id_product = p.id_product
 LEFT OUTER JOIN stores s ON s.id_store = p.id_store
 
 `;
-var insertId;
+
+const checkCategory = (id_category) => {
+  if(typeof(id_category) === 'undefined')
+  {
+    return ''
+  }
+  else
+  {
+    return `AND p.id_category = ${id_category}`
+  }
+}
 
 module.exports = {
   //tabla productos
@@ -66,8 +76,8 @@ module.exports = {
             ${baseQuery}
              where LOWER(p.title) LIKE LOWER('%${data.title}%') AND
              (p.stock BETWEEN ${data.minS} AND ${data.maxS}) AND
-             (p.price BETWEEN ${data.minP} AND ${data.maxP}) AND
-              p.id_category = ${data.id_category}`,
+             (p.price BETWEEN ${data.minP} AND ${data.maxP}) 
+             ${checkCategory(data.id_category)}  `,
       (error, results, fields) => {
         if (error) {
           callback(error);

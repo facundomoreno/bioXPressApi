@@ -27,9 +27,13 @@ module.exports = {
         getUserByUsername(body.username, (err, results) => {
             if (err) {
                 console.log(err);
+                return res.status(500).json({
+                    success: 0,
+                    data: "Database connection error"
+                });
             }
             if (!results) {
-                return res.json({
+                return res.status(401).json({
                     success: 0,
                     data: "Contraseña o nombre de usuario incorrecto."
                 });
@@ -40,13 +44,13 @@ module.exports = {
                 const jsontoken = sign({ result: results }, process.env.JSONTOKEN_KEY, {
                     expiresIn: "24h"
                 });
-                return res.json({
+                return res.status(200).json({
                     success: 1,
                     message: "login realizado con éxito",
                     token: jsontoken
                 });
             } else {
-                return res.json({
+                return res.status(401).json({
                     success: 0,
                     data: "Contraseña o nombre de usuario incorrecto."
                 });
