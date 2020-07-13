@@ -59,7 +59,9 @@ module.exports = {
     },
 
     getStores: (req, res) => {
-        getStores((err, results) => {
+        const body = req.body;
+       
+        getStores (body, (err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({

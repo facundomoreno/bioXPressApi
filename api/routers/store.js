@@ -32,7 +32,7 @@ const upload = multer({storage});
 //router.post("/createStore", checkToken, createStore);
 router.post("/updateStore", checkToken, updateStore);
 router.patch("/deleteStore/:id_store", checkToken, deleteStore);
-router.get("/getStores", checkToken, getStores);
+router.post("/getStores", checkToken, getStores);
 router.get("/getStoresbyid/:id_store", checkToken, getStoresById);
 
 router.post("/createStore", checkToken, upload.single("filee"), (req, res) => {
