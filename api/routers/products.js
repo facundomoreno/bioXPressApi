@@ -10,7 +10,7 @@ const {
 
     const pool = require("../../config/database");
 
-const {checkToken} = require('../../auth/TokenValidation');
+const {checkToken, decodeToken} = require('../../auth/TokenValidation');
 const router = require('express').Router();
 
 const multer = require('multer');
@@ -40,6 +40,15 @@ router.patch('/updateProductCategory', checkToken, updateProductCategory);
 router.get('/getProductCategories', checkToken, getProductsCategories);
 
 router.post("/uploadProduct", upload.single('filee'), (req, res) => {
+
+  const type = decodeToken(req).result.ds_type;
+  if(type != "vendedor")
+  {
+    return res.status(401).json({
+      success: 0,
+      message: "Usuario sin permisos para esta acción"
+    })
+  }
            
     pool.query(
       `insert into products(price, title, ds_product, id_store, stock, id_category) values(?,?,?,?,?,?)`, 
@@ -88,6 +97,15 @@ router.post("/uploadProduct", upload.single('filee'), (req, res) => {
 
 router.post("/updateProductPic", upload.single("filee"), (req, res) => {
 
+  const type = decodeToken(req).ds_type;
+  if(type != "vendedor")
+  {
+    return res.status(401).json({
+      success: 0,
+      message: "Usuario sin permisos para esta acción"
+    })
+  }
+  
   pool.query(
     `UPDATE product_pictures SET path = ?, original_name = ?, size = ?, date = ?  WHERE id_product = ?`,
     ['http://localhost:3002/' + req.file.path, req.file.originalname, req.file.size,  req.body.date, req.body.id_product],

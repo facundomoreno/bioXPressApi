@@ -77,7 +77,7 @@ module.exports = {
              where LOWER(p.title) LIKE LOWER('%${data.title}%') AND
              (p.stock BETWEEN ${data.minS} AND ${data.maxS}) AND
              (p.price BETWEEN ${data.minP} AND ${data.maxP}) 
-             ${checkCategory(data.id_category)}  `,
+             ${checkCategory(data.id_category)}`,
       (error, results, fields) => {
         if (error) {
           callback(error);

@@ -6,7 +6,7 @@ const {
     getStoresById 
 } = require("../methods/Stores/store.controller");
 const router = require("express").Router();
-const {checkToken} = require('../../auth/TokenValidation');
+const {checkToken, decodeToken} = require('../../auth/TokenValidation');
 
 const pool = require("../../config/database");
 
@@ -36,9 +36,21 @@ router.post("/getStores", checkToken, getStores);
 router.get("/getStoresbyid/:id_store", checkToken, getStoresById);
 
 router.post("/createStore", checkToken, upload.single("filee"), (req, res) => {
+
+  const id_user = decodeToken(req).result.id_user;
+
+  if(decodeToken(req).result.ds_type != "vendedor")
+  {
+    return res.status(401).json({
+      success: 0,
+      message: "Usuario sin permisos",
+  });
+
+  }
+  
     pool.query(
         `INSERT INTO stores (store_name, ds_store, id_user, adress, store_pic) VALUES(?,?,?,?,?)`,
-        [req.body.store_name, req.body.ds_store, req.body.id_user, req.body.adress,'http://localhost:3002/' + req.file.path],
+        [req.body.store_name, req.body.ds_store, id_user, req.body.adress,'http://localhost:3002/' + req.file.path],
         (error, results, fields) => {
           if (error) {
               return res.status(500).json({
@@ -59,6 +71,15 @@ router.post("/createStore", checkToken, upload.single("filee"), (req, res) => {
 });
 
 router.post("/updateStorePic", upload.single("filee"), (req, res) => {
+  const type = decodeToken(req).ds_type                      
+  if(type != "vendedor"){
+      return res.status(401).json({
+          success:0,
+          message: "Usuario sin permisos para esta acción"
+
+      });            
+  
+  }
 
     pool.query(
       `UPDATE stores SET store_pic = ? WHERE id_store = ?`,

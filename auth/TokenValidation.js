@@ -24,8 +24,7 @@ module.exports = {
 
     decodeToken: (req) => {
         token = req.headers.authorization.split(" ");
-        token = decode(token[1]);
-        console.log(token);
+        token = decode(token[1]);        
         return token;
     }
 };

@@ -5,10 +5,21 @@ const {
         getStores,
         getStoresById
     } = require("./store.service");
+
+    const decodeToken = require('../../../auth/TokenValidation')
 module.exports = {
 
     createStore: (req, res) => {
         const body = req.body;
+        const type = decodeToken(req).ds_type                      
+        if(type != "vendedor"){
+            return res.status(401).json({
+                success:0,
+                message: "Usuario sin permisos para esta acción"
+
+            });            
+        
+        }
         createStore(body, (err, results) => {
             if (err) {
                 console.log(err);
@@ -26,6 +37,15 @@ module.exports = {
 
     updateStore: (req, res) => {
         const body = req.body;
+        const type = decodeToken(req).ds_type                      
+        if(type != "vendedor"){
+            return res.status(401).json({
+                success:0,
+                message: "Usuario sin permisos para esta acción"
+
+            });            
+        
+        }
         updateStore(body, (err, results) => {
             if (err) {
                 console.log(err);
