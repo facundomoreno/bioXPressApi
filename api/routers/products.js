@@ -4,7 +4,8 @@ const {
      updateProductCategory,
      createProductCategory,
      getProductsCategories,
-     getProductsByFilters
+     getProductsByFilters,
+     getProductByIdProduct
     } = require('../methods/Products/products.controller');
 
     const pool = require("../../config/database");
@@ -31,6 +32,7 @@ const path = require('path');
 //router.post('/uploadProduct', checkToken, uploadProduct);
 router.post('/getProductsByFilters', checkToken, getProductsByFilters);
 router.get('/getProductsByIdStore/:id_store', checkToken, getProductsByIdStore);
+router.get('/getProductByIdProduct/:id_product', checkToken, getProductByIdProduct)
 
 //categorias
 router.post('/createProductCategory', checkToken, createProductCategory);

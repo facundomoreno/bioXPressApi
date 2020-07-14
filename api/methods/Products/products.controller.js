@@ -5,6 +5,7 @@ const {
     createProductCategory,
     updateProductCategory,
     getProductsCategories,
+    getProductByIdProduct
     
 } = require('./products.service');
 
@@ -51,6 +52,23 @@ module.exports =
         const body = req.body;
        
         getProductsByFilters (body, (err, results) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    success: 0,
+                    message: "database connection error",
+                });
+            }
+            return res.status(200).json({
+                success: 1,
+                data: results,
+            });
+        });
+    },
+    getProductByIdProduct: (req, res) => {
+        const id = req.params.id_product;
+       
+        getProductByIdProduct (id, (err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({
