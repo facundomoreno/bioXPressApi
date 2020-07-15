@@ -71,7 +71,7 @@ router.post("/createStore", checkToken, upload.single("filee"), (req, res) => {
 });
 
 router.post("/updateStorePic", upload.single("filee"), (req, res) => {
-  const type = decodeToken(req).ds_type                      
+  const type = decodeToken(req).result.ds_type                      
   if(type != "vendedor"){
       return res.status(401).json({
           success:0,

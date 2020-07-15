@@ -52,7 +52,7 @@ router.post("/createProductCategory", checkToken, createProductCategory);
 router.patch("/updateProductCategory", checkToken, updateProductCategory);
 router.get("/getProductCategories", checkToken, getProductsCategories);
 
-router.post("/uploadProduct", upload.single("filee"), (req, res) => {
+router.post("/uploadProduct", checkToken ,upload.single("filee"), (req, res) => {
   const type = decodeToken(req).result.ds_type;
   if (type != "vendedor") {
     return res.status(401).json({
@@ -117,7 +117,7 @@ router.post("/uploadProduct", upload.single("filee"), (req, res) => {
   );
 });
 
-router.post("/updateProductPic", upload.single("filee"), (req, res) => {
+router.post("/updateProductPic", checkToken , upload.single("filee"), (req, res) => {
   const type = decodeToken(req).result.ds_type;
   if (type != "vendedor") {
     return res.status(401).json({

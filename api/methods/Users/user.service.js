@@ -24,7 +24,7 @@ module.exports = {
 
     getUserByUsername: (username, callback) => {
         pool.query(
-            `SELECT u.username, u.id_user,  u.password, u.first_name, u.last_name, ut.ds_type
+            `SELECT u.username, u.id_user,  u.password, u.first_name, u.last_name, u.profile_pic, ut.ds_type
              FROM users u
              LEFT OUTER JOIN user_type ut ON ut.id_type = u.id_type
              where u.username = ?`, [username],
