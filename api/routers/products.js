@@ -87,7 +87,7 @@ router.post("/uploadProduct", checkToken ,upload.single("filee"), (req, res) => 
         pool.query(
           `INSERT INTO product_pictures (path, original_name, size, date, id_product) values(?,?,?,?,?)`,
           [
-            "http://localhost:3002/" + req.file.path,
+            process.env.SERVER_IP + req.file.path,
             req.file.originalname,
             req.file.size,
             req.body.date,
@@ -129,7 +129,7 @@ router.post("/updateProductPic", checkToken , upload.single("filee"), (req, res)
   pool.query(
     `UPDATE product_pictures SET path = ?, original_name = ?, size = ?, date = ?  WHERE id_product = ?`,
     [
-      "http://localhost:3002/" + req.file.path,
+      process.env.SERVER_IP + req.file.path,
       req.file.originalname,
       req.file.size,
       req.body.date,
@@ -140,7 +140,7 @@ router.post("/updateProductPic", checkToken , upload.single("filee"), (req, res)
         pool.query(
           `INSERT INTO product_pictures (path, original_name, size, date, id_product) values(?,?,?,?,?)`,
           [
-            "http://localhost:3002/" + req.file.path,
+            process.env.SERVER_IP + req.file.path,
             req.file.originalname,
             req.file.size,
             req.body.date,
