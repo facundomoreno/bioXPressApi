@@ -9,7 +9,7 @@ const {
     
 } = require('./products.service');
 
-const decodeToken = require('../../../auth/TokenValidation')
+const {decodeToken} = require('../../../auth/TokenValidation')
 
 
 
@@ -96,7 +96,7 @@ module.exports =
     //tabla categorias
     createProductCategory: (req, res) => {
         const body = req.body;
-        const type = decodeToken(req).ds_type                      
+        const type = decodeToken(req).result.ds_type                      
         if(type != "administrador"){
             return res.status(401).json({
                 success:0,
@@ -139,7 +139,7 @@ module.exports =
     },
     updateProductCategory: (req, res) => {
         const body = req.body;
-        const type = decodeToken(req).ds_type                      
+        const type = decodeToken(req).result.ds_type                      
         if(type != "administrador"){
             return res.status(401).json({
                 success:0,
