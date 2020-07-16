@@ -42,7 +42,7 @@ const upload = multer({
 //defino las rutas, su tipo y los métodos asociados
 
 router.post("/createUser", upload.single("filee"), (req, res) => {
-    var filepath = '';
+    var filepath = 'no';
     if(req.file)
     {
         filepath = process.env.SERVER_IP + req.file.path

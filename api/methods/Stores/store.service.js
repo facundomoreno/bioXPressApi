@@ -57,7 +57,10 @@ module.exports = {
 
     getStoresById: (id_store ,callBack) => {
         pool.query(
-            `SELECT * FROM stores WHERE id_store = ?`,
+            `SELECT s.*, u.first_name, u.last_name, u.profile_pic
+             FROM stores s 
+             LEFT OUTER JOIN users u ON u.id_user = s.id_user
+             WHERE s.id_store = ?`,
             [id_store],
             (error, results, fields) => {
                 if (error) {
