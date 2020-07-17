@@ -37,7 +37,7 @@ module.exports = {
 
     updateStore: (req, res) => {
         const body = req.body;
-        const type = decodeToken(req).ds_type                      
+        const type = decodeToken(req).result.ds_type                      
         if(type != "vendedor"){
             return res.status(401).json({
                 success:0,

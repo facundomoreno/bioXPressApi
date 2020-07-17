@@ -23,7 +23,7 @@ module.exports = {
     },
 
     deleteStore: (id_store, callback) => {
-        pool.query(`UPDATE stores SET deleted = 1 WHERE id_store`
+        pool.query(`UPDATE stores SET deleted = 1 WHERE id_store = ?`
              [id_store],
             (error, results, fields) => {
                 if (error) {

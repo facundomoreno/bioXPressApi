@@ -5,6 +5,7 @@ app.use(express.json());
 const userRouter = require("./api/routers/user");
 const productRouter = require('./api/routers/products');
 const storeRouter = require('./api/routers/store');
+const deliveryRouter = require('./api/routers/delivery');
 const path = require('path')
 var bodyParser = require('body-parser')
 
@@ -33,6 +34,7 @@ app.use(function (req, res, next) {
 app.use("/users", userRouter);
 app.use("/products", productRouter);
 app.use("/stores", storeRouter);
+app.use("/delivery", deliveryRouter);
 
 app.listen(process.env.APP_PORT, () => {
     console.log("Server corriendo en el puerto: ", process.env.APP_PORT);
