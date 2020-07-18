@@ -3,6 +3,7 @@ const router = require("express").Router();
 require("dotenv").config();
 
 const pool = require("../../config/database");
+const { genSaltSync, hashSync} = require("bcrypt");
 const { checkToken, decodeToken} = require("../../auth/TokenValidation");
 const path = require("path");
 const multer = require("multer");
@@ -42,7 +43,9 @@ const upload = multer({
 //defino las rutas, su tipo y los métodos asociados
 
 router.post("/createUser", upload.single("filee"), (req, res) => {
-    var filepath = 'no';
+   const salt = genSaltSync(10);
+    req.body.password = hashSync(req.body.password, salt);
+    var filepath = 'no';  
     if(req.file)
     {
         filepath = process.env.SERVER_IP + req.file.path
@@ -50,13 +53,13 @@ router.post("/createUser", upload.single("filee"), (req, res) => {
     pool.query(
         `INSERT INTO users (username, password, profile_pic, id_type, first_name, last_name, dni) values(?,?,?,?,?,?,?)`,
         [
-            req.username,
-            req.password,
+            req.body.username,
+            req.body.password,
             filepath,               
-            req.id_type,
-            req.first_name,
-            req.last_name,
-            req.dni
+            req.body.id_type,
+            req.body.first_name,
+            req.body.last_name,
+            req.body.dni
         ],
         (error, results, fields) => {
           if (error) {

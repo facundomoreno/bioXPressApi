@@ -3,9 +3,9 @@ const pool = require("../../../config/database");
 const baseQuery = 
 `SELECT pm.payment_method, u.username, u.dni, u.first_name, u.last_name, u.phone_number, ad.*, dl.*
 FROM deliveries dl
-LEFT OUTER JOIN payment_methods pm ON dl.id_pm = pm.id_pm
-LEFT OUTER JOIN users u ON dl.id_buyer = u.id_user
-LEFT OUTER JOIN adresses ad ON dl.id_adress = ad.id_adress`
+LEFT OUTER JOIN payment_methods pm ON pm.id_pm = dl.id_pm
+LEFT OUTER JOIN users u ON u.id_user = dl.id_buyer
+LEFT OUTER JOIN adresses ad ON ad.id_user = dl.id_buyer`
 
 module.exports = {   
 
@@ -93,10 +93,9 @@ module.exports = {
         );
     },
 
-    getAllDeliveries: (callBack) => {
+    getAllDeliveries: (data,callBack) => {
         pool.query(
-            `${baseQuery}`,
-              [data],
+            `${baseQuery}`, [data],
             (error, results, fields) => {
                 if (error) {
                     callBack(error);

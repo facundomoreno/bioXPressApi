@@ -8,7 +8,7 @@ const {
    getAllDeliveries
 } = require("./delivery.service");
 
-const decodeToken = require('../../../auth/TokenValidation')
+const {decodeToken} = require('../../../auth/TokenValidation')
 module.exports = {
 
 createDelivery: (req, res) => {
@@ -81,14 +81,14 @@ getDeliveriesByIdUser: (req, res) => {
 },
 
 getAllDeliveries: (req, res) => {
-    const id_user = decodeToken(req).result.ds_type
+    const type = decodeToken(req).result.ds_type
     if (type != "administrador") {
         return res.status(401).json({
           success: 0,
           message: "Usuario sin permisos para esta acción",
         });
       }                      
-    getAllDeliveries ((err, results) => {
+    getAllDeliveries (req.body,(err, results) => {
         if (err) {
             console.log(err);
             return res.status(500).json({
