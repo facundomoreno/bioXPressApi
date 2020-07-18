@@ -7,8 +7,7 @@ LEFT OUTER JOIN payment_methods pm ON dl.id_pm = pm.id_pm
 LEFT OUTER JOIN users u ON dl.id_buyer = u.id_user
 LEFT OUTER JOIN adresses ad ON dl.id_adress = ad.id_adress`
 
-module.exports = {
-   
+module.exports = {   
 
     createDelivery: (data, callback) => {
         pool.query(`INSERT INTO deliveries (id_pm, delivery_arrival, id_buyer, delivery_request, id_adress) values(?,?,?,?,?)` [
@@ -89,10 +88,25 @@ module.exports = {
                 if (error) {
                     callBack(error);
                 }
-                return callBack(null, results[0]);
+                return callBack(null, results);
             }
         );
     },
+
+    getAllDeliveries: (callBack) => {
+        pool.query(
+            `${baseQuery}`,
+              [data],
+            (error, results, fields) => {
+                if (error) {
+                    callBack(error);
+                }
+                return callBack(null, results);
+            }
+        );
+    },
+
+
 
     
     getCartForDelivery: (id_delivery, callback) => {

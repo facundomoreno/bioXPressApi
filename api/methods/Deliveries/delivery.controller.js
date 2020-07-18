@@ -4,7 +4,8 @@ const {
    getDeliveriesByIdUser,
    getDeliveryById,
    getCartForDelivery,
-   updateDelivery
+   updateDelivery,
+   getAllDeliveries
 } = require("./delivery.service");
 
 const decodeToken = require('../../../auth/TokenValidation')
@@ -65,6 +66,29 @@ updateDelivery: (req, res) => {
 getDeliveriesByIdUser: (req, res) => {
     const id_user = decodeToken(req).result.id_user                      
     getDeliveriesByIdUser (id_user, (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: 0,
+                message: "database connection error",
+            });
+        }
+        return res.status(200).json({
+            success: 1,
+            data: results,
+        });
+    });
+},
+
+getAllDeliveries: (req, res) => {
+    const id_user = decodeToken(req).result.ds_type
+    if (type != "administrador") {
+        return res.status(401).json({
+          success: 0,
+          message: "Usuario sin permisos para esta acción",
+        });
+      }                      
+    getAllDeliveries ((err, results) => {
         if (err) {
             console.log(err);
             return res.status(500).json({
