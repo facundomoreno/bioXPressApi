@@ -23,6 +23,7 @@ module.exports = {
     },
 
     getUserByUsername: (username, callback) => {
+       
         pool.query(
             `SELECT u.username, u.id_user,  u.password, u.first_name, u.last_name, u.profile_pic, ut.ds_type
              FROM users u

@@ -22,9 +22,20 @@ module.exports = {
         });
     },
 
-    login: (req, res) => {
-        const body = req.body;
-        getUserByUsername(body.username, (err, results) => {
+    login: (req, res) => {         
+         
+         if (!req.headers.authorization ||
+            req.headers.authorization.indexOf("Basic ") === -1
+         ) {
+            return res.status(403).json({ message: "Missing Authorization Header" });
+         }
+
+        const base64Credentials = req.headers.authorization.split(" ")[1];
+        const credentials = Buffer.from(base64Credentials, "base64").toString("ascii");
+        const [username, password] = credentials.split(":");
+       
+
+        getUserByUsername(username, (err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({
@@ -38,7 +49,9 @@ module.exports = {
                     data: "Contraseña o nombre de usuario incorrecto."
                 });
             }
-            const result = compareSync(body.password, results.password);
+            
+            const result = compareSync(password, results.password);
+            
             if (result) {
                 results.password = undefined;
                 const jsontoken = sign({ result: results }, process.env.JSONTOKEN_KEY, {
