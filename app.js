@@ -6,8 +6,8 @@ const userRouter = require("./api/routers/user");
 const productRouter = require('./api/routers/products');
 const storeRouter = require('./api/routers/store');
 const deliveryRouter = require('./api/routers/delivery');
-const path = require('path')
-var bodyParser = require('body-parser')
+const path = require('path');
+var bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
