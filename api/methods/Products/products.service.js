@@ -117,6 +117,20 @@ module.exports = {
     );
    
   },
+  getProductsByCategory: (id, callback) => {
+    pool.query(
+      `
+            ${baseQuery}
+             WHERE p.id_category = ?`, [id],
+      (error, results, fields) => {
+        if (error) {
+          callback(error);
+        }
+        
+        return callback(null, results);
+      }
+    );
+  },
   //categorias
   createProductCategory: (data, callback) => {
     pool.query(

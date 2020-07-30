@@ -6,6 +6,7 @@ const {
   getProductsCategories,
   getProductsByFilters,
   getProductByIdProduct,
+  getProductsByCategory
 } = require("../methods/Products/products.controller");
 
 const pool = require("../../config/database");
@@ -45,11 +46,8 @@ const upload = multer({
 //router.post('/uploadProduct', checkToken, uploadProduct);
 router.post("/getProductsByFilters", checkToken, getProductsByFilters);
 router.get("/getProductsByIdStore/:id_store", checkToken, getProductsByIdStore);
-router.get(
-  "/getProductByIdProduct/:id_product",
-  checkToken,
-  getProductByIdProduct
-);
+router.get("/getProductByIdProduct/:id_product",checkToken, getProductByIdProduct);
+router.get("/getProductsByCategory", checkToken, getProductsByCategory);
 
 //categorias
 router.post("/createProductCategory", checkToken, createProductCategory);
