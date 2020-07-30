@@ -90,18 +90,32 @@ module.exports = {
     );
   },
   getProductByIdProduct: (id, callback) => {
+    var resultsR = []
     pool.query(
       `
             ${baseQuery}
              WHERE p.id_product = ?`, [id],
-      (error, results, fields) => {
+      (error, results1, fields) => {
         if (error) {
           callback(error);
         }
+        resultsR.push(results1[0]) 
+        pool.query(
+          `SELECT * FROM product_pictures
+           WHERE id_product = ?`, [id],
+          (error, results2, fields) => {
+            if (error) {
+              callback(error);
+            }
+            resultsR.push(results2)
+            console.log(resultsR)
+            return callback(null, resultsR);
+          }
+        );       
         
-        return callback(null, results);
       }
     );
+   
   },
   //categorias
   createProductCategory: (data, callback) => {
