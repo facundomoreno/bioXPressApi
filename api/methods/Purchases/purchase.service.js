@@ -8,6 +8,26 @@ LEFT OUTER JOIN users u ON u.id_user = dl.id_buyer
 LEFT OUTER JOIN adresses ad ON ad.id_user = dl.id_buyer`
 
 module.exports = {   
+    
+    getCartProducts: (id_cart, callback) => {
+        pool.query(`
+        SELECT c.*, p.price, p.title, pic.id_pic, MIN(pic.path), cp.*, SUM(p.price)
+        FROM cart_products cp
+        LEFT OUTER JOIN products p ON cp.id_product = p.id_product
+        LEFT OUTER JOIN cart c ON cp.id_cart = c.id_cart
+        LEFT OUTER JOIN product_pictures pic ON pic.id_product = p.id_product
+        WHERE cp.id_cart = ? GROUP BY cp.id_cart desc`,
+        [id_cart], 
+            (error, results, fields) => {
+                if (error) {
+                    return callback(error);
+                }
+                return callback(null, results);
+            }
+
+        );
+
+    },
 
     createDelivery: (data, callback) => {
         pool.query(`INSERT INTO deliveries (id_pm, delivery_arrival, id_buyer, delivery_request, id_adress) values(?,?,?,?,?)` [
@@ -104,9 +124,6 @@ module.exports = {
             }
         );
     },
-
-
-
     
     getCartForDelivery: (id_delivery, callback) => {
         pool.query(`
@@ -126,5 +143,7 @@ module.exports = {
         );
 
     },
+
+
 
 }
