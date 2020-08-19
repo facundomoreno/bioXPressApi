@@ -48,7 +48,7 @@ router.post("/createUser", upload.single("filee"), (req, res) => {
     var filepath = 'no';  
     if(req.file)
     {
-        filepath = process.env.SERVER_IP + req.file.path
+        filepath = req.file.path
     }
     pool.query(
         `INSERT INTO users (username, password, profile_pic, id_type, first_name, last_name, dni) values(?,?,?,?,?,?,?)`,
@@ -85,7 +85,7 @@ router.post("/updateUserPic", checkToken, upload.single("filee"), (req, res) => 
     pool.query(
         `UPDATE users set profile_pic = ? WHERE id_user = ?`,
         [            
-            process.env.SERVER_IP + req.file.path,
+            req.file.path,
             id_user          
             
         ],
