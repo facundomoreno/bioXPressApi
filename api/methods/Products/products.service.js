@@ -4,7 +4,7 @@ const pool = require("../../../config/database");
 const path = require('path');
 
 const baseQuery = `
-SELECT p.*, c.ds_category,s.store_name, s.store_pic ,pic.path, pic.id_product AS id_product_pic 
+SELECT p.*, c.ds_category,s.store_name, s.store_pic , MIN(pic.path) as path, pic.id_product AS id_product_pic 
 FROM products p 
 LEFT OUTER JOIN product_category c ON c.id_category = p.id_category 
 LEFT OUTER JOIN product_pictures pic ON pic.id_product = p.id_product 
@@ -77,7 +77,7 @@ module.exports = {
              (p.stock BETWEEN ${data.minS} AND ${data.maxS}) AND
              (p.price BETWEEN ${data.minP} AND ${data.maxP}) 
              ${checkCategory(data.id_category)} 
-             ORDER BY p.id_product desc
+             GROUP BY p.id_product desc
              LIMIT ${data.minProd}, ${data.maxProd}                             
              `,
       (error, results, fields) => {
