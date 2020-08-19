@@ -6,7 +6,7 @@ const {
     getDeliveriesByIdUser,
     getDeliveryById,
     getAllDeliveries 
-} = require("../methods/Deliveries/delivery.controller");
+} = require("../methods/Purchases/purchase.controller");
 const router = require("express").Router();
 const {checkToken} = require('../../auth/TokenValidation');
 

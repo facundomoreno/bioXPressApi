@@ -6,7 +6,7 @@ const {
    getCartForDelivery,
    updateDelivery,
    getAllDeliveries
-} = require("./delivery.service");
+} = require("./purchase.service");
 
 const {decodeToken} = require('../../../auth/TokenValidation')
 module.exports = {
