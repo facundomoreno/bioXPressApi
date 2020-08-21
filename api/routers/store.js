@@ -50,7 +50,7 @@ router.post("/createStore", checkToken, upload.single("filee"), (req, res) => {
   
     pool.query(
         `INSERT INTO stores (store_name, ds_store, id_user, adress, store_pic) VALUES(?,?,?,?,?)`,
-        [req.body.store_name, req.body.ds_store, id_user, req.body.adress,'http://localhost:3002/' + req.file.path],
+        [req.body.store_name, req.body.ds_store, id_user, req.body.adress,req.file.path],
         (error, results, fields) => {
           if (error) {
               return res.status(500).json({
@@ -83,7 +83,7 @@ router.post("/updateStorePic", upload.single("filee"), (req, res) => {
 
     pool.query(
       `UPDATE stores SET store_pic = ? WHERE id_store = ?`,
-      ['http://localhost:3002/' + req.file.path, req.body.id_store],
+      [req.file.path, req.body.id_store],
       (error, results, fields) => {
         if (error) {
             return res.status(500).json({

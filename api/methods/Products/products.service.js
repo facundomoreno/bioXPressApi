@@ -121,7 +121,9 @@ module.exports = {
     pool.query(
       `
             ${baseQuery}
-             WHERE p.id_category = ?`, [id],
+             WHERE p.id_category = ?
+             GROUP BY p.id_product desc
+             `, [id],
       (error, results, fields) => {
         if (error) {
           callback(error);

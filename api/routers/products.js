@@ -144,7 +144,7 @@ router.post(
     pool.query(
       `INSERT INTO product_pictures (path, id_product) values(?,?)`,
       [
-        process.env.SERVER_IP + req.file.path,     
+        req.file.path,     
         req.body.id_product,
       ],
       (error, results, fields) => {
