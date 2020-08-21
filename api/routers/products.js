@@ -6,7 +6,9 @@ const {
   getProductsCategories,
   getProductsByFilters,
   getProductByIdProduct,
-  getProductsByCategory
+  getProductsByCategory,
+  createDiscount,
+  getProductsWithDiscount
 } = require("../methods/Products/products.controller");
 
 const pool = require("../../config/database");
@@ -48,6 +50,8 @@ router.post("/getProductsByFilters", checkToken, getProductsByFilters);
 router.get("/getProductsByIdStore/:id_store", checkToken, getProductsByIdStore);
 router.get("/getProductByIdProduct/:id_product",checkToken, getProductByIdProduct);
 router.get("/getProductsByCategory", checkToken, getProductsByCategory);
+router.post("/creatediscount", checkToken, createDiscount);
+router.get("/getpromos", checkToken, getProductsWithDiscount);
 
 //categorias
 router.post("/createProductCategory", checkToken, createProductCategory);

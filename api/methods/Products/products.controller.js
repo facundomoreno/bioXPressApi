@@ -6,7 +6,9 @@ const {
     updateProductCategory,
     getProductsCategories,
     getProductByIdProduct,
-    getProductsByCategory
+    getProductsByCategory,
+    createDiscount,
+    getProductsWithDiscount
     
 } = require('./products.service');
 
@@ -98,6 +100,39 @@ module.exports =
         const id = 2;
        
         getProductsByCategory (id, (err, results) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    success: 0,
+                    message: "database connection error",
+                });
+            }
+            return res.status(200).json({
+                success: 1,
+                data: results,
+            });
+        });
+    },
+    createDiscount: (req, res) => {
+        const body = req.body;
+        createDiscount(body, (err, results) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    success: 0,
+                    message: "database connection error",
+                });
+            }
+            return res.status(200).json({
+                success: 1,
+                data: results,
+            });
+        });
+    },
+    getProductsWithDiscount: (req, res) => {
+        const body = req.body;
+       
+        getProductsWithDiscount (body, (err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({

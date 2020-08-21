@@ -4,7 +4,7 @@ const pool = require("../../../config/database");
 const path = require('path');
 
 const baseQuery = `
-SELECT p.*, c.ds_category,s.store_name, s.store_pic , MIN(pic.path) as path, pic.id_product AS id_product_pic 
+SELECT p.*, c.ds_category, s.store_name, s.store_pic, MIN(pic.path) as path, pic.id_product AS id_product_pic 
 FROM products p 
 LEFT OUTER JOIN product_category c ON c.id_category = p.id_category 
 LEFT OUTER JOIN product_pictures pic ON pic.id_product = p.id_product 
@@ -131,6 +131,35 @@ module.exports = {
       }
     );
   },
+  createDiscount: (data, callback) => {    
+    pool.query(
+      `UPDATE products SET discount = ? WHERE id_product = ?`,
+      [
+        data.discount,
+        data.id_product
+      ],
+      (error, results, fields) => {
+        if (error) {
+          return callback(error);
+        }
+        return callback(null, results);
+      }
+    );
+  },
+  getProductsWithDiscount: ( callback) => {
+    pool.query(
+      `
+            ${baseQuery}
+             WHERE p.discount > 0`,
+      (error, results, fields) => {
+        if (error) {
+          callback(error);
+        }
+        
+        return callback(null, results);
+      }
+    );
+  },
   //categorias
   createProductCategory: (data, callback) => {
     pool.query(
@@ -154,7 +183,7 @@ module.exports = {
   },
   updateProductCategory: (data, callback) => {
     pool.query(
-      `update product_category SET ds_category = ? where id_category=?`,
+      `UPDATE product_category SET ds_category = ? WHERE id_category = ?`,
       [data.ds_category, data.id_category],
       (error, results, fields) => {
         if (error) {
