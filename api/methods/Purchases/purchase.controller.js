@@ -5,7 +5,13 @@ const {
    getDeliveryById,
    getCartForDelivery,
    updateDelivery,
-   getAllDeliveries
+   getAllDeliveries,
+   createCartWithProduct,
+   removeProduct,
+   deleteCart,
+   getCartProducts,
+   updateCartStatus,
+   insertProductToCart,
 } = require("./purchase.service");
 
 const {decodeToken} = require('../../../auth/TokenValidation')
@@ -14,6 +20,94 @@ module.exports = {
 createDelivery: (req, res) => {
     const body = req.body;
     createDelivery(body, (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: 0,
+                message: "database connection error",
+            });
+        }
+        return res.status(200).json({
+            success: 1,
+            data: results,
+        });
+    });
+},
+
+createCartWithProduct: (req, res) => {
+    const body = req.body;
+    const id_user = decodeToken(req).result.id_user 
+    body.push({id_buyer:id_user});
+    console.log(body);   
+    createCartWithProduct(body, (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: 0,
+                message: "database connection error",
+            });
+        }
+        return res.status(200).json({
+            success: 1,
+            data: results,
+        });
+    });
+},
+
+insertProductToCart: (req, res) => {
+    const body = req.body;   
+    insertProductToCart(body, (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: 0,
+                message: "database connection error",
+            });
+        }
+        return res.status(200).json({
+            success: 1,
+            data: results,
+        });
+    });
+},
+
+getCartProducts: (req, res) => {
+    const id_cart = req.params.id_cart                     
+    getCartProducts (id_cart, (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: 0,
+                message: "database connection error",
+            });
+        }
+        return res.status(200).json({
+            success: 1,
+            data: results,
+        });
+    });
+},
+
+removeProduct: (req, res) => {
+    const id_cart_prod = req.params.id_cart_prod;
+    removeProduct(id_cart_prod, (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: 0,
+                message: "database connection error",
+            });
+        }
+        return res.status(200).json({
+            success: 1,
+            data: results,
+        });
+    });
+},
+
+deleteCart: (req, res) => {
+    const id_cart = req.params.id_cart;
+    deleteCart(id_cart, (err, results) => {
         if (err) {
             console.log(err);
             return res.status(500).json({
@@ -45,6 +139,22 @@ deleteDelivery: (req, res) => {
     });
 },
 
+updateCartStatus: (req, res) => {
+    const body = req.body;
+    updateCartStatus(body, (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: 0,
+                message: "database connection error",
+            });
+        }
+        return res.status(200).json({
+            success: 1,
+            data: results,
+        });
+    });
+},
 
 updateDelivery: (req, res) => {
     const body = req.body;
