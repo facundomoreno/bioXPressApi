@@ -148,7 +148,7 @@ module.exports = {
       }
     );
   },
-  getProductsWithDiscount: ( callback) => {
+  getProductsWithDiscount: (callback) => {
     pool.query(
       `
             ${baseQuery}

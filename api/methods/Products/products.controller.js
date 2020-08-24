@@ -130,9 +130,8 @@ module.exports =
         });
     },
     getProductsWithDiscount: (req, res) => {
-        const body = req.body;
        
-        getProductsWithDiscount (body, (err, results) => {
+        getProductsWithDiscount ((err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({
