@@ -95,12 +95,9 @@ router.post(
 
         if (req.file) {
           pool.query(
-            `INSERT INTO product_pictures (path, original_name, size, date, id_product) values(?,?,?,?,?)`,
+            `INSERT INTO product_pictures (path, id_product) values(?,?)`,
             [
-              req.file.path,
-              req.file.originalname,
-              req.file.size,
-              req.body.date,
+              req.file.path,              
               insertId,
             ],
             (error, results, fields) => {
