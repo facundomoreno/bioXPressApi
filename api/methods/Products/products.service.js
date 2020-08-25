@@ -27,14 +27,16 @@ module.exports = {
   //tabla productos
   uploadProduct: (data, callback) => {    
     pool.query(
-      `INSERT INTO products (price, title, ds_product, id_store, stock, id_category) values(?,?,?,?,?,?)`,
+      `INSERT INTO products (price, title, ds_product, id_store, stock, id_category, withdrawal, delivery) values(?,?,?,?,?,?,?,?)`,
       [
         data.price,
         data.title, 
         data.ds_product,
         data.id_store,
         data.stock,
-        data.id_category
+        data.id_category,
+        withdrawal,
+        delivery
       ],
       (error, results, fields) => {
         if (error) {
