@@ -28,7 +28,7 @@ module.exports = {
     },
 
     createCartWithProduct: (data, callback) => {
-        pool.query(`INSERT INTO cart (id_buyer, date) values(?,?,?)` [
+        pool.query(`INSERT INTO cart (id_buyer, date) values(?,?)` [
                 data.id_buyer,
                 data.date
             ],
