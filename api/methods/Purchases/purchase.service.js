@@ -28,10 +28,10 @@ module.exports = {
     },
 
     createCartWithProduct: (data, callback) => {
-        pool.query(`INSERT INTO cart (withdrawal, id_buyer, status) values(?,?,?)` [
+        pool.query(`INSERT INTO cart (withdrawal, id_buyer, date) values(?,?,?)` [
                 data.withdrawal,
                 data.id_buyer,
-                "Filling"
+                date
             ],
             (error, results, fields) => {
                 if (error) {
@@ -54,63 +54,6 @@ module.exports = {
                 }
             );
             }
-        );
-    },
-
-    removeProduct: (id_cart_prod, callback) => {
-        pool.query(`DELETE FROM cart_products WHERE id_cart_prod = ?`
-            [id_cart_prod],
-            (error, results, fields) => {
-                if (error) {
-                    return callback(error);
-                }
-                return callback(null, results);
-            }
-        );
-    },
-
-    deleteCart: (id_cart, callback) => {
-        pool.query(`DELETE FROM cart WHERE id_cart = ?`
-            [id_cart],
-            (error, results, fields) => {
-                if (error) {
-                    return callback(error);
-                }
-                return callback(null, results);
-            }
-
-        );
-    },
-
-    updateCartStatus: (data, callback) => {
-        pool.query(`UPDATE cart SET status = ? WHERE id_cart = ?`
-            [
-              data.status,
-              data.id_delivery
-            ],
-            (error, results, fields) => {
-                if (error) {
-                    return callback(error);
-                }
-                return callback(null, results);
-            }
-
-        );
-    },
-
-    insertProductToCart: (data, callback) => {
-        pool.query(`INSERT INTO cart_products (id_product, quantity, id_cart) values(?,?,?)` [
-                data.id_product,
-                data.quantity,
-                data.id_cart
-            ],
-            (error, results, fields) => {
-                if (error) {
-                    return callback(error);
-                }
-                return callback(null, results);
-            }
-
         );
     },
 
