@@ -31,9 +31,7 @@ createDelivery: (req, res) => {
 },
 
 createCartWithProduct: (req, res) => {
-    const body = req.body;
-    const id_user = decodeToken(req).result.id_user 
-    body.id_buyer = id_user;
+    const body = req.body; 
     console.log(body);   
     createCartWithProduct(body, (err, results) => {
         if (err) {

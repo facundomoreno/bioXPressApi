@@ -28,7 +28,8 @@ module.exports = {
     },
 
     createCartWithProduct: (data, callback) => {
-        pool.query(`INSERT INTO cart (id_buyer, date) values(?,?)` [
+        pool.query(`INSERT INTO cart (id_buyer, date) values(?,?)`, 
+            [
                 data.id_buyer,
                 data.date
             ],
@@ -36,28 +37,29 @@ module.exports = {
                 if (error) {
                     return callback(error);
                 }
-                
                 id_cart = results.insertId
-
-                pool.query(`INSERT INTO cart_products (id_product, quantity, id_cart) values(?,?,?)` [
+                pool.query(`INSERT INTO cart_products (id_product, quantity, id_cart) values(?,?,?)`, 
+                [
                     data.id_product,
                     data.quantity,
-                    {id_cart}
+                    id_cart
                 ],
                 (error, results, fields) => {
                     if (error) {
                         return callback(error);
                     }
-                    results.push(id_cart);
                     return callback(null, results);
                 }
+    
             );
             }
+
         );
     },
 
     createDelivery: (data, callback) => {
-        pool.query(`INSERT INTO deliveries (id_pm, delivery_arrival, id_buyer, delivery_request, id_adress) values(?,?,?,?,?)` [
+        pool.query(`INSERT INTO deliveries (id_pm, delivery_arrival, id_buyer, delivery_request, id_adress) values(?,?,?,?,?)`, 
+            [
                 data.id_pm,
                 data.delivery_arrival,
                 data.id_buyer,
@@ -75,7 +77,7 @@ module.exports = {
     },
 
     deleteDelivery: (data, callback) => {
-        pool.query(`UPDATE deliveries SET state = ? WHERE id_delivery = ?`
+        pool.query(`UPDATE deliveries SET state = ? WHERE id_delivery = ?`,
             [
               data.state,
               data.id_delivery
@@ -92,7 +94,7 @@ module.exports = {
 
     
     updateDelivery: (data, callback) => {
-        pool.query(`UPDATE deliveries SET id_pm = ?, delivery_arrival = ?, id_adress = ?, state = ? WHERE id_delivery = ?`
+        pool.query(`UPDATE deliveries SET id_pm = ?, delivery_arrival = ?, id_adress = ?, state = ? WHERE id_delivery = ?`,
             [
               data.id_pm,
               data.delivery_arrival,
