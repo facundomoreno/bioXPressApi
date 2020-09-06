@@ -28,22 +28,29 @@ module.exports = {
     },
 
     createCartWithProduct: (data, callback) => {
-        pool.query(`INSERT INTO cart (id_buyer, date) values(?,?)`, 
+        pool.query(`INSERT INTO cart (id_buyer, date, total_price) values(?,?,?)`, 
             [
                 data.id_buyer,
-                data.date
+                data.date,
+                data.total_price
             ],
             (error, results, fields) => {
                 if (error) {
                     return callback(error);
                 }
                 id_cart = results.insertId
-                pool.query(`INSERT INTO cart_products (id_product, quantity, id_cart) values(?,?,?)`, 
-                [
-                    data.id_product,
-                    data.quantity,
+
+                var array = [];
+                for (var i = 0; i < data.cart_products.length; i++) {
+                  array.push([
+                    data.cart_products[i].id_product,
+                    data.cart_products[i].quantity,
                     id_cart
-                ],
+                  ]);
+                }
+
+                pool.query(`INSERT INTO cart_products (id_product, quantity, id_cart) values ?`, 
+                [array],
                 (error, results, fields) => {
                     if (error) {
                         return callback(error);
