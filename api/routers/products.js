@@ -50,7 +50,7 @@ const upload = multer({
 router.post("/getProductsByFilters", checkToken, getProductsByFilters);
 router.get("/getProductsByIdStore/:id_store", checkToken, getProductsByIdStore);
 router.get("/getProductByIdProduct/:id_product",checkToken, getProductByIdProduct);
-router.get("/getProductsByCategory", checkToken, getProductsByCategory);
+router.get("/getProductsByCategory/:id_category", checkToken, getProductsByCategory);
 router.post("/creatediscount", checkToken, createDiscount);
 router.get("/getpromos", checkToken, getProductsWithDiscount);
 router.get("/getrecommended", checkToken, recommendedProducts);

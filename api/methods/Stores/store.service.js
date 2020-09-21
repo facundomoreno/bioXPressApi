@@ -1,14 +1,30 @@
 const pool = require("../../../config/database");
 
 module.exports = {
-   
-
-    updateStore: (data, callback) => {
-        pool.query(`UPDATE stores SET store_name = ?, ds_store = ?, id_user = ?, adress = ?, store_pic = ? WHERE id_store` [
+    
+    createStore: (data, callback) => {
+        pool.query(`INSERT INTO stores (store_name, ds_Store, id_user, store_pic)`, 
+            [
                 data.store_name,
                 data.ds_store,
                 data.id_user,
-                data.adress,
+                data.store_pic,
+            ],
+            (error, results, fields) => {
+                if (error) {
+                    return callback(error);
+                }
+                return callback(null, results);
+            }
+
+        );
+    },
+
+    updateStore: (data, callback) => {
+        pool.query(`UPDATE stores SET store_name = ?, ds_store = ?, id_user = ?, store_pic = ? WHERE id_store` [
+                data.store_name,
+                data.ds_store,
+                data.id_user,
                 data.store_pic,
                 data.id_store
             ],

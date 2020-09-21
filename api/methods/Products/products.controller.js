@@ -98,7 +98,7 @@ module.exports =
         });
     },
     getProductsByCategory: (req, res) => {
-        const id = 2;
+        const id = req.params.id_category;
        
         getProductsByCategory (id, (err, results) => {
             if (err) {
