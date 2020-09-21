@@ -10,7 +10,9 @@ const {
     removeProduct,
     deleteCart,
     getCartProducts,
-    updateCartStatus,
+    updateStatusOfCart,
+    getCartsByStatusXClient,
+    getCartsByStatusXStore,
     insertProductToCart 
 } = require("../methods/Purchases/purchase.controller");
 const router = require("express").Router();
@@ -29,7 +31,9 @@ router.post("/createcart", checkToken, createCartWithProduct);
 router.post("/deletecart/:id_cart", checkToken, deleteCart);
 router.post("/removecartproduct/:id_cart_prod", checkToken, removeProduct);
 router.get("/getcartproducts/:id_cart", checkToken, getCartProducts);
-router.post("/updatecartstatus", checkToken, updateCartStatus);
+router.post("/updatecartstatus", checkToken, updateStatusOfCart);
+router.get("/getcartsbystatusforclient", checkToken, getCartsByStatusXClient);
+router.get("/getcartsbystatusforstore", checkToken, getCartsByStatusXStore);
 router.post("/insertproduct", checkToken, insertProductToCart);
 
 module.exports = router;
