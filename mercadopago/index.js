@@ -1,31 +1,39 @@
-const mercadopago = require('mercadopago');
+var mercadopago = require('mercadopago');
+
+mercadopago.configurations.setAccessToken("TEST-7516335497846145-022113-117a386babbbb51e9924cc29a347bf23LD_LB-80934812");
 
 module.exports = {
-    configurar: (req, res, next) => {
-        mercadopago.configure({
-            sandbox: true,
-            access_token: process.env.TOKEN_MERCADOPAGO
-        })
-    },
-    nuevoPago: (req, res, next) => {
-        mercadopago.payment.create({
-            description: req.body.description,
-            transaction_amount: req.body.amount,
-            payment_method_id: req.body.payment_method,
-            payer: {
-              email: req.body.email,
-          
-              identification: {
-                type: req.body.type,
-                number: req.body.dni
-              }
-          
-            }
-          }).then(function (mpResponse) {
-            console.log(mpResponse);
-          }).catch(function (mpError) {
-            console.log(err);
-        })
-     
-    }
-}
+
+  handlePayment: (req) => {
+
+    var payment_data = {
+      transaction_amount: Number(req.body.transactionAmount),
+      token: req.body.token,
+      description: req.body.description,
+      installments: Number(req.body.installments),
+      payment_method_id: req.body.paymentMethodId,
+      issuer_id: req.body.issuer,
+      payer: {
+        email: req.body.email,
+        identification: {
+          type: req.body.docType,
+          number: req.body.docNumber
+        }
+      }
+    };
+
+    mercadopago.payment.save(payment_data)
+    .then(function(response) {
+      return res.status(response.status).json({
+        status: response.body.status,
+        status_detail: response.body.status_detail,
+        id: response.body.id
+      });
+    })
+    .catch(function(error) {
+      return res.status(response.status).send(error);
+    });
+
+  }
+
+};
