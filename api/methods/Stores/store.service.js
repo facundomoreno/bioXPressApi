@@ -14,7 +14,27 @@ module.exports = {
                 if (error) {
                     return callback(error);
                 }
-                return callback(null, results);
+
+                id_store = results.insertId;
+
+                    pool.query(`INSERT INTO adresses (provincia, localidad, cp, calle, piso, numero, id_store)`, 
+                [
+                    data.provincia,
+                    data.localidad,
+                    data.cp,
+                    data.calle,
+                    data.piso,
+                    data.numero,
+                    id_store,
+                ],
+                (error, results, fields) => {
+                    if (error) {
+                        return callback(error);
+                    }
+                    return callback(null, results);
+                }
+
+        );
             }
 
         );
