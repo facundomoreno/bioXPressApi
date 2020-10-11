@@ -3,7 +3,55 @@ const pool = require("../../../config/database");
 module.exports = {
     
     createStore: (data, callback) => {
-        pool.query(`INSERT INTO stores (store_name, ds_Store, id_user, store_pic)`, 
+        pool.query(`UPDATE users SET dni = ?, phone_number = ? WHERE id_user = ?` [
+            data.dni,
+            data.phone_number,
+            data.id_user
+        ],
+        (error, results, fields) => {
+            if (error) {
+                return callback(error);
+            }
+            pool.query(`INSERT INTO stores (store_name, ds_Store, id_user, store_pic)`, 
+            [
+                data.store_name,
+                data.ds_store,
+                data.id_user,
+                data.store_pic
+            ],
+            (error, results, fields) => {
+                if (error) {
+                    return callback(error);
+                }
+
+                id_store = results.insertId;
+
+                    pool.query(`INSERT INTO adresses (provincia, localidad, cp, calle, piso, numero, id_store)`, 
+                [
+                    data.provincia,
+                    data.localidad,
+                    data.cp,
+                    data.calle,
+                    data.piso,
+                    data.numero,
+                    id_store
+                ],
+                (error, results, fields) => {
+                    if (error) {
+                        return callback(error);
+                    }
+                    return callback(null, results);
+                }
+
+        );
+            }
+
+        );
+        }
+
+    );
+
+        /*pool.query(`INSERT INTO stores (store_name, ds_Store, id_user, store_pic)`, 
             [
                 data.store_name,
                 data.ds_store,
@@ -37,7 +85,7 @@ module.exports = {
         );
             }
 
-        );
+        );*/
     },
 
     updateStore: (data, callback) => {
