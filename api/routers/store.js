@@ -1,5 +1,4 @@
 const { 
-    createStore, 
     updateStore, 
     deleteStore, 
     getStores, 
@@ -62,48 +61,60 @@ router.post("/createStore", checkToken, upload.single("filee"), (req, res) => {
   });
 
   }
-  
+    
     pool.query(
-        `INSERT INTO stores (store_name, ds_store, id_user, store_pic) VALUES(?,?,?,?)`,
-        [req.body.store_name, req.body.ds_store, id_user, req.file.path],
-        (error, results, fields) => {
-          if (error) {
-              return res.status(500).json({
-                  success: 0,
-                  message: error,
-              });
-          }
-                id_store = results.insertId;
+      `UPDATE users SET dni = ?, phone_number = ?, id_type = 2 WHERE id_user = ?`,
+      [req.body.dni, req.body.phone_number, id_user],
+      (error, results, fields) => {
+        if (error) {
+            return res.status(500).json({
+                success: 0,
+                message: error,
+            });
+        }
 
-                  pool.query(`INSERT INTO adresses (provincia, localidad, cp, calle, piso, numero, id_store) VALUES(?,?,?,?,?,?,?)`, 
-                [
-                    req.body.provincia,
-                    req.body.localidad,
-                    req.body.cp,
-                    req.body.calle,
-                    req.body.piso,
-                    req.body.numero,
-                    id_store,
-                ],
-
-                (error, results, fields) => {
-                  if (error) {
-                      return res.status(500).json({
-                          success: 0,
-                          message: error,
+        pool.query(
+          `INSERT INTO stores (store_name, ds_store, id_user, store_pic) VALUES(?,?,?,?)`,
+          [req.body.store_name, req.body.ds_store, id_user, req.file.path],
+          (error, results, fields) => {
+            if (error) {
+                return res.status(500).json({
+                    success: 0,
+                    message: error,
+                });
+            }
+                  id_store = results.insertId;
+  
+                    pool.query(`INSERT INTO adresses (provincia, localidad, cp, calle, piso, numero, id_store) VALUES(?,?,?,?,?,?,?)`, 
+                  [
+                      req.body.provincia,
+                      req.body.localidad,
+                      req.body.cp,
+                      req.body.calle,
+                      req.body.piso,
+                      req.body.numero,
+                      id_store,
+                  ],
+  
+                  (error, results, fields) => {
+                    if (error) {
+                        return res.status(500).json({
+                            success: 0,
+                            message: error,
+                        });
+                    }
+                      return res.status(200).json({
+                        success: 1,
+                        data: results
                       });
                   }
-                    return res.status(200).json({
-                      success: 1,
-                      data: results
-                    });
-                }
-          
-          );
-        }
-      );
-    
+            
+            );
+          }
+        );
 
+      }
+    );
 
 });
 
