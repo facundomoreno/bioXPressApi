@@ -52,15 +52,6 @@ router.get("/getStoresbyid/:id_store", checkToken, getStoresById);
 router.post("/createStore", checkToken, upload.single("filee"), (req, res) => {
 
   const id_user = decodeToken(req).result.id_user;
-
-  if(decodeToken(req).result.ds_type != "vendedor")
-  {
-    return res.status(401).json({
-      success: 0,
-      message: "Usuario sin permisos",
-  });
-
-  }
     
     pool.query(
       `UPDATE users SET dni = ?, phone_number = ?, id_type = 2 WHERE id_user = ?`,
