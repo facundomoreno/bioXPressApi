@@ -3,7 +3,7 @@ const pool = require("../../../config/database");
 module.exports = {
     
     createStore: (data, callback) => {
-        pool.query(`UPDATE users SET dni = ?, phone_number = ? WHERE id_user = ?` [
+        pool.query(`UPDATE users SET dni = ?, phone_number = ?, id_type = 2 WHERE id_user = ?` [
             data.dni,
             data.phone_number,
             data.id_user
