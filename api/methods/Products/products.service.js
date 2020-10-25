@@ -57,7 +57,8 @@ module.exports = {
   },
   getProductsByIdStore: (id_store, callback) => {
     pool.query(
-      `${baseQuery} WHERE p.id_store = ?`,
+      `${baseQuery} WHERE p.id_store = ?
+        GROUP BY p.id_product desc`,
       [id_store],
       (error, results, fields) => {
         if (error) {
