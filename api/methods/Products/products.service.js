@@ -68,15 +68,16 @@ module.exports = {
       }
     );
   },
+              /*AND
+             (p.stock BETWEEN ${data.minS} AND ${data.maxS}) AND
+             (p.price BETWEEN ${data.minP} AND ${data.maxP}) 
+             ${checkCategory(data.id_category)}
+             LIMIT ${data.minProd}, ${data.maxProd}*/
   getProductsByFilters: (data, callback) => {
     pool.query(
       `      ${baseQuery}
-             where LOWER(p.title) LIKE LOWER('%${data.title}%') AND
-             (p.stock BETWEEN ${data.minS} AND ${data.maxS}) AND
-             (p.price BETWEEN ${data.minP} AND ${data.maxP}) 
-             ${checkCategory(data.id_category)} 
-             GROUP BY p.id_product desc
-             LIMIT ${data.minProd}, ${data.maxProd}                             
+             where LOWER(p.title) LIKE LOWER('%${data.title}%')
+             GROUP BY p.id_product desc                      
              `,
       (error, results, fields) => {
         if (error) {
