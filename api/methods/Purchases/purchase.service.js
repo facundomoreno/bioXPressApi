@@ -68,7 +68,7 @@ module.exports = {
         LEFT OUTER JOIN cart c ON cp.id_cart = c.id_cart
         LEFT OUTER JOIN product_pictures pic ON pic.id_product = p.id_product
         WHERE c.status = ? AND p.id_store = ? GROUP BY cp.id_cart desc`,
-      [data.status, data.id_buyer],
+      [data.status, data.id_store],
       (error, results, fields) => {
         if (error) {
           return callback(error);
