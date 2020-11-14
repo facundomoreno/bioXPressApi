@@ -29,8 +29,8 @@ module.exports = {
 
   createCartWithProduct: (data, callback) => {
     pool.query(
-      `INSERT INTO cart (id_buyer, date, total_price, status) values(?,?,?,?)`,
-      [data.id_buyer, data.date, data.total_price, 1],
+      `INSERT INTO cart (id_buyer, date, total_price, status, id_pm, type, delivery_arrival) values(?,?,?,?,?,?,?)`,
+      [data.id_buyer, data.date, data.total_price, 1, data.id_pm, data.type, data.delivery_arrival],
       (error, results, fields) => {
         if (error) {
           return callback(error);
@@ -63,11 +63,13 @@ module.exports = {
   getCartsByStatusXStore: (data, callback) => {
     pool.query(
       `
-        SELECT c.*, p.price, p.title, pic.id_pic, MIN(pic.path) as path, cp.*
+        SELECT c.*, u.first_name, u.last_name, p.price, p.title, pic.id_pic, MIN(pic.path) as path, cp.*, pm.payment_method
         FROM cart c
         LEFT OUTER JOIN cart_products cp ON c.id_cart = cp.id_cart
         LEFT OUTER JOIN products p ON cp.id_product = p.id_product
         LEFT OUTER JOIN product_pictures pic ON pic.id_product = p.id_product
+        LEFT OUTER JOIN users u ON c.id_buyer = u.id_user
+        LEFT OUTER JOIN payment_methods pm ON c.id_pm = pm.id_pm
         WHERE c.status = ? AND p.id_store = ? GROUP BY cp.id_cart_prod desc`,
       [data.status, data.id_store],
       (error, results, fields) => {
@@ -98,6 +100,10 @@ module.exports = {
           var id_buyer = value[0].id_buyer
           var date = value[0].date
           var status = value[0].status
+          var name = value[0].first_name + " " + value[0].last_name
+          var type = value[0].type
+          var pm = value [0].id_pm
+          var delivery = value[0].delivery_arrival
           
           for(var i = 0; i < value.length; i++)
           {
@@ -106,6 +112,11 @@ module.exports = {
             delete value[i].id_buyer
             delete value[i].date
             delete value[i].status
+            delete value[i].first_name
+            delete value[i].last_name
+            delete value[i].type
+            delete value[i].id_pm
+            delete value[i].delivery_arrival
           }
           
           responseX.push(
@@ -114,11 +125,15 @@ module.exports = {
               total_price: total,
               id_buyer: id_buyer,
               date: date,
-              status: status,              
-              products: value
+              status: status,
+              name: name,              
+              products: value,
+              type: type,
+              id_pm: pm,
+              delivery_arrival:delivery
             })
         });        
-     
+
         return callback(null, responseX);
       }
     );
