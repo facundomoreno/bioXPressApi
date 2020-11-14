@@ -1,3 +1,4 @@
+const { response } = require("express");
 const pool = require("../../../config/database");
 
 const baseQuery = `SELECT pm.payment_method, u.username, u.dni, u.first_name, u.last_name, u.phone_number, ad.*, dl.*
@@ -62,7 +63,7 @@ module.exports = {
   getCartsByStatusXStore: (data, callback) => {
     pool.query(
       `
-        SELECT c.*, p.price, p.title, pic.id_pic, MIN(pic.path), cp.*
+        SELECT c.*, p.price, p.title, pic.id_pic, MIN(pic.path) as path, cp.*
         FROM cart c
         LEFT OUTER JOIN cart_products cp ON c.id_cart = cp.id_cart
         LEFT OUTER JOIN products p ON cp.id_product = p.id_product
@@ -73,14 +74,52 @@ module.exports = {
         if (error) {
           return callback(error);
         }
-        ids = []
-        for (var i = 0; i < results.length; i++) {
-          if(!ids.includes(results[i].id_cart)){
-            ids.push(results[i].id_cart);
+        var map = new Map();
+       
+        
+        for(var i = 0; i < results.length; i++)
+        {
+          var id = results[i].id_cart
+          
+          if(!map.has(id)){
+          map.set(id, [results[i]])
+          }
+          else
+          {
+            array = map.get(id)
+            array.push(results[i])
+            map.set(id, array)
           }
         }
-        console.log(ids);
-        return callback(null, results);
+        responseX = []
+        map.forEach(function(value, key){      
+
+          var total = value[0].total_price
+          var id_buyer = value[0].id_buyer
+          var date = value[0].date
+          var status = value[0].status
+          
+          for(var i = 0; i < value.length; i++)
+          {
+            delete value[i].id_cart
+            delete value[i].total_price
+            delete value[i].id_buyer
+            delete value[i].date
+            delete value[i].status
+          }
+          
+          responseX.push(
+            {
+              id_cart: key,
+              total_price: total,
+              id_buyer: id_buyer,
+              date: date,
+              status: status,              
+              products: value
+            })
+        });        
+     
+        return callback(null, responseX);
       }
     );
   },
