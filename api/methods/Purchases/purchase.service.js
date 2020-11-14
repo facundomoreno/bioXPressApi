@@ -126,11 +126,12 @@ module.exports = {
               id_buyer: id_buyer,
               date: date,
               status: status,
-              name: name,              
-              products: value,
+              name: name,     
               type: type,
               id_pm: pm,
-              delivery_arrival:delivery
+              delivery_arrival:delivery,         
+              products: value
+             
             })
         });        
 
