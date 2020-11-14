@@ -4,20 +4,20 @@ mercadopago.configurations.setAccessToken("TEST-7516335497846145-022113-117a386b
 
 module.exports = {
 
-  handlePayment: (req) => {
+  handlePayment: (payment, response) => {
 
     var payment_data = {
-      transaction_amount: Number(req.body.transactionAmount),
-      token: req.body.token,
-      description: req.body.description,
-      installments: Number(req.body.installments),
-      payment_method_id: req.body.paymentMethodId,
-      issuer_id: req.body.issuer,
+      transaction_amount: Number(payment.transactionAmount),
+      token: payment.token,
+      description: payment.description,
+      installments: Number(payment.installments),
+      payment_method_id: payment.paymentMethodId,
+      issuer_id: payment.issuer,
       payer: {
-        email: req.body.email,
+        email: payment.email,
         identification: {
-          type: req.body.docType,
-          number: req.body.docNumber
+          type: payment.docType,
+          number: payment.docNumber
         }
       }
     };

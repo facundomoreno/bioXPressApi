@@ -28,8 +28,8 @@ module.exports = {
 
   createCartWithProduct: (data, callback) => {
     pool.query(
-      `INSERT INTO cart (id_buyer, date, total_price) values(?,?,?)`,
-      [data.id_buyer, data.date, data.total_price],
+      `INSERT INTO cart (id_buyer, date, total_price, status) values(?,?,?,?)`,
+      [data.id_buyer, data.date, data.total_price, 1],
       (error, results, fields) => {
         if (error) {
           return callback(error);
