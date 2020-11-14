@@ -47,7 +47,7 @@ createCartWithProduct: (req, res) => {
                 message: "database connection error",
             });
         }
-        console.log(handlePayment(req.body.payment, response));
+        //console.log(handlePayment(req.body.payment, response));
         return res.status(200).json({
             success: 1,
             data: results,
