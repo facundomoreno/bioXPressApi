@@ -74,11 +74,8 @@ module.exports = {
           return callback(error);
         }
         ids = []
-        carts_withproducts = {}
         for (var i = 0; i < results.length; i++) {
           if(!ids.includes(results[i].id_cart)){
-            carts_withproducts.id = results[i].id_cart;
-            carts_withproducts.products.push(results[i].id_product);
             ids.push(results[i].id_cart);
           }
         }
