@@ -62,12 +62,12 @@ module.exports = {
   getCartsByStatusXStore: (data, callback) => {
     pool.query(
       `
-        SELECT c.*, p.price, p.title, pic.id_pic, MIN(pic.path), cp.*, SUM(p.price)
-        FROM cart_products cp
+        SELECT c.*, p.price, p.title, pic.id_pic, MIN(pic.path), cp.*
+        FROM cart c
+        LEFT OUTER JOIN cart_products cp ON c.id_cart = cp.id_cart
         LEFT OUTER JOIN products p ON cp.id_product = p.id_product
-        LEFT OUTER JOIN cart c ON cp.id_cart = c.id_cart
         LEFT OUTER JOIN product_pictures pic ON pic.id_product = p.id_product
-        WHERE c.status = ? AND p.id_store = ? GROUP BY cp.id_cart desc`,
+        WHERE c.status = ? AND p.id_store = ? GROUP BY cp.id_cart_prod desc`,
       [data.status, data.id_store],
       (error, results, fields) => {
         if (error) {
