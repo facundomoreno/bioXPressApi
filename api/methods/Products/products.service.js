@@ -202,7 +202,7 @@ module.exports = {
       LEFT OUTER JOIN cart car ON cp.id_cart = car.id_cart
       LEFT OUTER JOIN products p ON cp.id_product = p.id_product
       WHERE car.id_buyer = ? 
-      ORDER BY car.date ASC LIMIT 2
+      ORDER BY car.date DESC LIMIT 2
       `,
       [data.id_buyer],
       (error, results, fields) => {
