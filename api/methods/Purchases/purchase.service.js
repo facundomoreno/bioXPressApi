@@ -154,6 +154,65 @@ module.exports = {
         if (error) {
           return callback(error);
         }
+        var map = new Map();
+       
+        
+        for(var i = 0; i < results.length; i++)
+        {
+          var id = results[i].id_cart
+          
+          if(!map.has(id)){
+          map.set(id, [results[i]])
+          }
+          else
+          {
+            array = map.get(id)
+            array.push(results[i])
+            map.set(id, array)
+          }
+        }
+        responseX = []
+        map.forEach(function(value, key){      
+
+          var total = value[0].total_price
+          var id_buyer = value[0].id_buyer
+          var date = value[0].date
+          var status = value[0].status
+          var name = value[0].first_name + " " + value[0].last_name
+          var type = value[0].type
+          var pm = value [0].id_pm
+          var delivery = value[0].delivery_arrival
+          
+          for(var i = 0; i < value.length; i++)
+          {
+            delete value[i].id_cart
+            delete value[i].total_price
+            delete value[i].id_buyer
+            delete value[i].date
+            delete value[i].status
+            delete value[i].first_name
+            delete value[i].last_name
+            delete value[i].type
+            delete value[i].id_pm
+            delete value[i].delivery_arrival
+          }
+          
+          responseX.push(
+            {
+              id_cart: key,
+              total_price: total,
+              id_buyer: id_buyer,
+              date: date,
+              status: status,
+              name: name,     
+              type: type,
+              id_pm: pm,
+              delivery_arrival:delivery,         
+              products: value
+             
+            })
+        });        
+
         return callback(null, results);
       }
     );
