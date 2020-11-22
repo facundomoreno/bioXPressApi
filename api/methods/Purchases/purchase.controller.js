@@ -159,6 +159,8 @@ getDeliveryById: (req, res) => {
 
 getCartsByStatusXClient: (req, res) => {
     const body = req.body;
+    const id_user = decodeToken(req).result.id_user 
+    body.id_buyer = id_user
     getCartsByStatusXClient(body, (err, results) => {
         if (err) {
             console.log(err);
