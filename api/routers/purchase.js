@@ -32,7 +32,7 @@ router.post("/deletecart/:id_cart", checkToken, deleteCart);
 router.post("/removecartproduct/:id_cart_prod", checkToken, removeProduct);
 router.get("/getcartproducts/:id_cart", checkToken, getCartProducts);
 router.post("/updatecartstatus", checkToken, updateStatusOfCart);
-router.get("/getcartsbystatusforclient", checkToken, getCartsByStatusXClient);
+router.post("/getcartsbystatusforclient", checkToken, getCartsByStatusXClient);
 router.post("/getcartsbystatusforstore", checkToken, getCartsByStatusXStore);
 router.post("/insertproduct", checkToken, insertProductToCart);
 
